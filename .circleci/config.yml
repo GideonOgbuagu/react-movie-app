@@ -21,7 +21,7 @@ aliases:
       name: Install dependencies
       commnad: npm install
   - &save-cache:
-    save_cache:
+    save-cache:
       paths:
         - node_modules
       key: app-{{ checksum "package.json"}}
@@ -52,7 +52,7 @@ jobs:
       - *show-current-branch-name
       - *restore-cache
       - *install-dependencies
-      - *save_cache
+      - *save-cache
       
 
   deploy-to-aws-s3:

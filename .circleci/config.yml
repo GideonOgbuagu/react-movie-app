@@ -12,7 +12,7 @@ aliases:
       name: Show current branch
       command: echo ${CIRCLE_BRANCH}
   - &restore-cache
-    restore-cache:
+    restore_cache:
         keys:
           - app-{{ checksum "package.json"}}
           - app-
@@ -21,7 +21,7 @@ aliases:
       name: Install dependencies
       commnad: npm install
   - &save-cache:
-    save-cache:
+    save_cache:
       paths:
         - node_modules
       key: app-{{ checksum "package.json"}}
@@ -53,6 +53,16 @@ jobs:
       - *restore-cache
       - *install-dependencies
       - *save-cache
+
+  linting:
+    executor: app-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *restore-cache
+      - run:
+          name: Run linting
+          command: npm run linting
       
 
   deploy-to-aws-s3:
@@ -103,9 +113,18 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - deploy-to-aws-s3:
+      - linting
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - development
+                - staging
+                - master
+      - deploy-to-aws-s3:
+          requires:
+            - linting
           filters:
             branches:
               only:

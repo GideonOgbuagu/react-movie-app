@@ -154,7 +154,7 @@ jobs:
                 }
               },
               {
-                "type": "section"
+                "type": "section",
                 "fields": [
                   {
                     "type": "mrkdown",

@@ -144,9 +144,9 @@ jobs:
         template: ''
         custom: |
           {
-            "block": [
+            "blocks": [
               {
-                "type": "header"
+                "type": "header",
                 "text": {
                   "type": "plain_text",
                   "text": "${CIRCLE_BRANCH} branch deployment to aws s3 and cloudfront is complete. 👍",
@@ -236,11 +236,11 @@ workflows:
                 - staging
                 - master
       - notify-via-slack:
-        requires:
-          - deploy-to-aws-cloudfront
-        filters:
-          branches:
-            only:
-              - development
-              - staging
-              - master
+          requires:
+            - deploy-to-aws-cloudfront
+          filters:
+            branches:
+              only:
+                - development
+                - staging
+                - master
